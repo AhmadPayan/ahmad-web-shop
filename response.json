@@ -1,0 +1,9 @@
+{
+  "errorType": "NullReferenceException",
+  "errorMessage": "Object reference not set to an instance of an object.",
+  "stackTrace": [
+    "at WebShop.Lambda.Function.FunctionHandler(SQSEvent evnt, ILambdaContext context) in /mnt/c/Ahmad/Repos/Tutorial/webshop-aws/src/WebShop.Lambda/Function.cs:line 14",
+    "at Amazon.Lambda.RuntimeSupport.HandlerWrapper.<>c__DisplayClass8_0.<GetHandlerWrapper>b__0(InvocationRequest invocation) in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/HandlerWrapper.cs:line 54",
+    "at Amazon.Lambda.RuntimeSupport.LambdaBootstrap.InvokeOnceAsync(CancellationToken cancellationToken) in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/LambdaBootstrap.cs:line 185"
+  ]
+}
