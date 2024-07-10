@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-
+export AWS_PROFILE=localstack-ahmad
 print_current_directory() {
     echo "Current directory contents:"
     ls -al
@@ -37,7 +37,7 @@ deploy_cloudformation_stack() {
     echo "Creating CloudFormation stack..."
     aws --endpoint-url=http://localhost:4566 cloudformation create-stack \
         --stack-name WebShopStack \
-        --template-body file:///etc/localstack/init/ready.d/aws-cloudformation-template.yml
+        --template-body file:///etc/localstack/init/ready.d/aws-cloudformation-template.yml \
 
     # Wait for stack creation to complete
     aws --endpoint-url=http://localhost:4566 cloudformation wait stack-create-complete --stack-name WebShopStack

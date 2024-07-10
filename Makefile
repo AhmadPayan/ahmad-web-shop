@@ -8,7 +8,7 @@ ARTIFACTS_DIR = artifacts
 ZIP_FILE = $(ARTIFACTS_DIR)/$(PROJECT_NAME).zip
 
 # Default target
-all: clean build publish zip compose-up
+all: clean build publish zip set-permissions compose-up
 
 # Clean target
 clean:
@@ -34,8 +34,13 @@ zip: publish
 	@mkdir -p $(ARTIFACTS_DIR)
 	zip -jr $(ZIP_FILE) $(OUTPUT_DIR)/*
 
+# Set permissions target
+set-permissions:
+	@echo "Setting executable permissions on localstack-setup.sh..."
+	@if [ "$(shell uname)" = "Darwin" ]; then chmod +x localstack-setup.sh; fi
+
 # Docker Compose up target
-compose-up: zip
+compose-up: zip set-permissions
 	@echo "Running docker-compose up..."
 	docker-compose up --build -d
 
@@ -44,4 +49,4 @@ stop:
 	docker-compose down
 
 # Run all targets
-.PHONY: all build publish zip compose-up stop
+.PHONY: all build publish zip set-permissions compose-up stop

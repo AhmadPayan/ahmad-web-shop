@@ -27,13 +27,14 @@ namespace WebShop.IntegrationTests
             services.AddDefaultAWSOptions(new AWSOptions
             {
                 Credentials = new BasicAWSCredentials("test", "test"),
-                Region = RegionEndpoint.USEast2
+                Region = RegionEndpoint.USEast2,
             });
             var sqsConfig = new AmazonSQSConfig
             {
                 RegionEndpoint = RegionEndpoint.USEast2, 
                 ServiceURL = configuration["LocalStack:LocalStackHost"], // LocalStack endpoint URL
-                EndpointDiscoveryEnabled = true // Ensure this is set appropriately
+                EndpointDiscoveryEnabled = true, // Ensure this is set appropriately,
+                
             };
             var sqsClient = new AmazonSQSClient(sqsConfig);
 

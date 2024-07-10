@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using WebShop.Application.Models;
 using WebShop.Domain.Entities;
 using WebShop.Domain.Events;
@@ -15,11 +16,13 @@ public class OrderService : IOrderService
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IEventPublisher _eventPublisher;
+    private readonly ILogger<OrderService> _logger;
 
-    public OrderService(IOrderRepository orderRepository, IEventPublisher eventPublisher)
+    public OrderService(IOrderRepository orderRepository, IEventPublisher eventPublisher, ILogger<OrderService> logger)
     {
         _orderRepository = orderRepository;
         _eventPublisher = eventPublisher;
+        _logger = logger;
     }
 
     public async Task<Guid> PlaceOrderAsync(OrderRequestDto orderRequest)
@@ -41,6 +44,7 @@ public class OrderService : IOrderService
             OrderReferenceId = order.OrderReferenceId
         });
 
+        _logger.LogInformation("Message sent to the queue. Order Information {OrderId}", order.Id);
         return order.Id;
     }
 }

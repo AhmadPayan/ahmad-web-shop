@@ -12,10 +12,28 @@ This project demonstrates the use of AWS Lambda, SQS, and CloudWatch Logs in a s
 
 - Docker installed and running
 - LocalStack installed
+  - https://github.com/localstack/awscli-local 
+  - `pip install awscli-local`
+- AWS CLI installed
+  - https://aws.amazon.com/cli/
+
+- Configure AWS CLI for LocalStack:
+```sh
+aws configure --profile localstack-ahmad
+```
+
+- Region: `us-east-2`
+- key and secret: `test`
 
 ### Setup Project
 
 1. Build and Deploy the CloudFormation Stack
+
+Run make command to setup the project and containers:
+- `make`
+
+Done! You only need to run the integration test to see if everything is set up correctly.
+
 ```sh
 # Move the ZIP file to the local S3 bucket of LocalStack
 awslocal s3 mb s3://local-lambda-bucket  # Create S3 bucket if it doesn't exist
@@ -28,30 +46,40 @@ awslocal cloudformation create-stack --stack-name WebShopStack --template-body f
 2. Verify Lambda and SQS Creation
 ```sh
 # List Lambda functions to verify creation
-awslocal lambda list-functions --endpoint-url=http://localhost:4566
+awslocal lambda list-functions --endpoint-url=http://localhost:4566 --profile localstack-ahmad
 
 # List SQS queues to verify creation
-awslocal sqs list-queues --endpoint-url=http://localhost:4566
+awslocal sqs list-queues --endpoint-url=http://localhost:4566 --profile localstack-ahmad
 ```
 
 ## Viewing Logs
 
+For simplicity, run the view_logs.sh file. But you need to install the `jq`. (`jq` is a lightweight and flexible command-line JSON processor).
+In Mac:
+- `brew install jq`
+
+Then make it executable:
+- `chmod +x view_logs.sh`
+
+Now, you just need to run the integration this and then run the file to see the logs from the Lambda function
+- `./view_logs.sh`
+
 1. Describe Log Groups
 
 ```sh
-awslocal logs describe-log-groups --endpoint-url=http://localhost:4566
+awslocal logs describe-log-groups --endpoint-url=http://localhost:4566 --profile localstack-ahmad
 ```
 
 2. Describe Log Streams
 ```sh
 # Replace '/aws/lambda/YourLogGroupName' with the actual log group name from the previous step
-awslocal logs describe-log-streams --log-group-name '/aws/lambda/YourLogGroupName' --endpoint-url=http://localhost:4566
+awslocal logs describe-log-streams --log-group-name '/aws/lambda/YourLogGroupName' --endpoint-url=http://localhost:4566 --profile localstack-ahmad
 ```
 
 3. Tail Logs
 ```sh
 # Replace '/aws/lambda/YourLogGroupName' with the actual log group name
-awslocal logs tail '/aws/lambda/YourLogGroupName' --endpoint-url=http://localhost:4566
+awslocal logs tail '/aws/lambda/YourLogGroupName' --endpoint-url=http://localhost:4566 --profile localstack-ahmad
 ```
 
 ## Additional Commands
